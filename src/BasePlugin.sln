@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FroggoScripts", "FroggoScripts.csproj", "{2BED9FA3-8B65-4804-9DED-551DC4AF6241}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		BIE|x64 = BIE|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2BED9FA3-8B65-4804-9DED-551DC4AF6241}.BIE|x64.ActiveCfg = BIE|x64
+		{2BED9FA3-8B65-4804-9DED-551DC4AF6241}.BIE|x64.Build.0 = BIE|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {41E7E6F6-64E0-4894-9C31-9E2CC03D6CF4}
+	EndGlobalSection
+EndGlobal
