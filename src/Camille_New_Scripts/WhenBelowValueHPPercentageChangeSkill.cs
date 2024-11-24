@@ -7,12 +7,12 @@ using BepInEx;
 
 namespace BaseMod
 {
-    internal class AtValueSpeedBecomeUnclashable : MonoBehaviour
+    internal class WhenBelowValueHPPercentageChangeSkill : MonoBehaviour
     {
         public static void Setup(Harmony harmony)
         {
-            ClassInjector.RegisterTypeInIl2Cpp<AtValueSpeedBecomeUnclashable>();
-            harmony.PatchAll(typeof(AtValueSpeedBecomeUnclashable));
+            ClassInjector.RegisterTypeInIl2Cpp<WhenBelowValueHPPercentageChangeSkill>();
+            harmony.PatchAll(typeof(WhenBelowValueHPPercentageChangeSkill));
         }
 
         [HarmonyPatch(typeof(BattleUnitModel), nameof(BattleUnitModel.OnStartTurn_BeforeLog))]
@@ -22,26 +22,21 @@ namespace BaseMod
             foreach (var ability in action._skill.GetSkillAbilityScript())
             {
                 var scriptName = ability.scriptName;
-                if (scriptName.Contains("AtValueSpeedBecomeUnclashable_"))
+                if (scriptName.Contains("WhenBelowValueHPPercentageChangeSkill_"))
                 {
-                    if (ability.buffData == null) continue;
-
-                    // warning: horrible hack, very bad.
+                    // warning: horrible painful bullshit
                     // code to take an input of what skill becomes unclashable.
                     // horrible implementation but I need to do it, else the game can't find this specific skill.
-                    var newskillID = Convert.ToInt32(scriptName.Replace("AtValueSpeedBecomeUnclashable_", ""));
+                    var newskillID = Convert.ToInt32(scriptName.Replace("WhenBelowValueHPPercentageChangeSkill_", ""));
                     var whae = delegate (SkillModel x) { return x.GetID() == newskillID; };
                     var naenae = __instance.GetSkillList().Find(whae);
 
-                    // didn't feel like doing a conditional in the script name when I can just check value.
-                    var speed_conditional_needed = ability.buffData.value;
+                    // at the input players need to specify the conditional they wan
+                    var HP_percentage_needed = ability.buffData.value;
 
-                    // I think this checks our currentspeed???? Idk????
-                    var speedvalue = __instance.GetHitDamagePrevRound();
-
-                    if (speedvalue >= speed_conditional_needed)
+                    if (__instance.GetHpRatio() < HP_percentage_needed)
                     {
-                        naenae._skillData.canDuel = false;
+                        action.ChangeSkill(naenae);
                     }
                 };
             }

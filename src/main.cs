@@ -23,10 +23,13 @@ public class Main : BasePlugin
     public const string AUTHOR = "Froggo";
     public const string GUID = AUTHOR + "." + NAME;
 
+    public static ManualLogSource Logg;
+
     public override void Load()
 	{
-        var Log = new ManualLogSource("Hades");
         var harmony = new Harmony(NAME);
+
+        Logg = new ManualLogSource("Hades");
 
         // multiconditional
         ChangeSkillOnMultiConditional.Setup(harmony);
@@ -43,6 +46,9 @@ public class Main : BasePlugin
 
         // LCCCB Ryoshu Coin Effect
         CustomReloadScript.Setup(harmony);
-        AtValueSpeedBecomeUnclashable.Setup(harmony);
+
+        // Speed Dependant Change Skill
+        AtValueSpeedChangeSkill.Setup(harmony);
+        WhenBelowValueHPPercentageChangeSkill.Setup(harmony);
     }
 }
