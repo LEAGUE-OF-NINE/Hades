@@ -4,6 +4,7 @@ using HarmonyLib;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 using BepInEx;
+using BepInEx.Logging;
 
 namespace BaseMod
 {

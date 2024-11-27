@@ -18,21 +18,18 @@ namespace BaseMod;
 [BepInPlugin(GUID, NAME, VERSION)]
 public class Main : BasePlugin
 {
-    public const string NAME = "Hades";
-    public const string VERSION = "0.0.2";
+    public const string NAME = "FroggoScripts";
+    public const string VERSION = "0.0.4";
     public const string AUTHOR = "Froggo";
     public const string GUID = AUTHOR + "." + NAME;
-
-    public static ManualLogSource Logg;
 
     public override void Load()
 	{
         var harmony = new Harmony(NAME);
 
-        Logg = new ManualLogSource("Hades");
-
         // multiconditional
         ChangeSkillOnMultiConditional.Setup(harmony);
+        ChangeSkillOnConditionalTarget.Setup(harmony);
 
         // casetti skills
         LowerBuffIfGreaterByStack.Setup(harmony);
@@ -47,8 +44,15 @@ public class Main : BasePlugin
         // LCCCB Ryoshu Coin Effect
         CustomReloadScript.Setup(harmony);
 
-        // Speed Dependant Change Skill
+        // Speed/HP Dependant Change Skill
         AtValueSpeedChangeSkill.Setup(harmony);
         WhenBelowValueHPPercentageChangeSkill.Setup(harmony);
+
+        // reuse coin on buff check self
+        ReuseAllCoinsOnBuffCheckSelf.Setup(harmony);
+        ReuseCoin1andCoin2OnBuffCheckSelf.Setup(harmony);
+
+        // reuse coin on buff check target
+        ReuseAllCoinsOnBuffCheckTarget.Setup(harmony);
     }
 }
