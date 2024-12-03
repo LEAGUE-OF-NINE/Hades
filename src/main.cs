@@ -54,5 +54,10 @@ public class Main : BasePlugin
 
         // reuse coin on buff check target
         ReuseAllCoinsOnBuffCheckTarget.Setup(harmony);
+
+        // dead ally scripts
+        IfStackAlliesDiedChangeSkill.Setup(harmony);
+        GainDeadAlliesMultiplyBuffs.Setup(harmony);
+        CapSPAtStack.Setup(harmony);
     }
 }
