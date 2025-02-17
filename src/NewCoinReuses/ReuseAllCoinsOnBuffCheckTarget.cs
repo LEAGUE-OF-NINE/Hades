@@ -25,6 +25,7 @@ namespace BaseMod
                 // checks if our script contains the right Script Name
                 if (scriptName.Contains("ReuseAllCoinsOnBuffCheckTarget"))
                 {
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     // if buffdata is empty, skip this.
                     if (ability.buffData == null) continue;
 
@@ -37,10 +38,11 @@ namespace BaseMod
                     var count_check = ability.buffData.turn;
 
                     BattleUnitModel battleUnitModel = (action != null) ? action.GetMainTarget() : null;
-                    if (battleUnitModel != null && battleUnitModel.GetActivatedBuffTurn(keyword_status_one) >= potency_check && battleUnitModel.GetActivatedBuffTurn(keyword_status_one) >= count_check)
+                    if (battleUnitModel != null && battleUnitModel.GetActivatedBuffStack(keyword_status_one) >= potency_check && battleUnitModel.GetActivatedBuffTurn(keyword_status_one) >= count_check)
                     {
+                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
                         // copy all coins of this skill and reuses them
-                        action._skill.CopyAllCoinModelAndAddToList();
+                        action._skill.CopyAllCoinModelAndAddToList(action, timing);
                     }
                 };
             }

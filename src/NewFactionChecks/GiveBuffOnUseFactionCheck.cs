@@ -25,12 +25,13 @@ namespace BaseMod
                 // checks if our script contains the right Script Name
                 if (scriptName.Contains("GiveBuffOnUseFactionCheck_"))
                 {
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     // if buffdata is empty, skip this.
                     if (ability.buffData == null) continue;
 
                     // removes the first part of our script name and only takes the faction name.
                     // then filters through buff data and collects all the data we need
-                    var factionname = scriptName.Replace("GiveBuffOnUseFactionCheck_", "");
+                    var factionname = scriptName.Substring("GiveBuffOnUseFactionCheckPerfectReson_".Length);
                     var parsed_association = Enum.Parse<UNIT_KEYWORD>(factionname);
 
                     var keyword = ability.buffData.buffKeyword;
@@ -40,8 +41,8 @@ namespace BaseMod
                     var count_check = ability.buffData.turn;
                     var active_round = ability.buffData.activeRound;
 
-                    // checks through every living unit onthe battle, and if they're both alive AND player controlled, proceed
-                    foreach (BattleUnitModel model in BattleObjectManager.Instance.GetAliveList(true))
+                    UNIT_FACTION thisFaction = __instance.Faction;
+                    foreach (BattleUnitModel model in BattleObjectManager.Instance.GetAliveList(false, thisFaction))
                     {
                         // just more debug text
                         var current_unit_tracker = model.AssociationList;

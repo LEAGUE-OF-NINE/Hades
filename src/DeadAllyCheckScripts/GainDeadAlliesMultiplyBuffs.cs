@@ -25,6 +25,7 @@ namespace BaseMod
                 var scriptName = ability.scriptName;
                 if (scriptName.Contains("GainDeadAlliesMultiplyBuffs"))
                 {
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     // if buffdata is empty, skip this.
                     if (ability.buffData == null) continue;
 
@@ -45,6 +46,7 @@ namespace BaseMod
 
                     if (finaldeadallycount >= 1)
                     {
+                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
                         __instance.AddBuff_Giver(keyword_status, final_potency_adder, __instance, BATTLE_EVENT_TIMING.ON_START_TURN, final_count_adder, active_round, ABILITY_SOURCE_TYPE.SKILL, null, final_potency_adder, final_count_adder);
                     }
                 };

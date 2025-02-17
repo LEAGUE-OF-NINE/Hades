@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using UnhollowerRuntimeLib;
@@ -25,6 +25,7 @@ namespace BaseMod
                 // checks if our script contains the right Script Name
                 if (scriptName.Contains("ReuseAllCoinsOnBuffCheckSelf"))
                 {
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     // if buffdata is empty, skip this.
                     if (ability.buffData == null) continue;
 
@@ -43,8 +44,9 @@ namespace BaseMod
                     // if our current potency is greater than or equal than our input potency, continue 
                     if (current_potency_amount >= potency_check && current_count_amount >= count_check)
                     {
+                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
                         // copy all coins of this skill and reuses them
-                        action._skill.CopyAllCoinModelAndAddToList();
+                        action._skill.CopyAllCoinModelAndAddToList(action, timing);
                     }
                 };
             }

@@ -24,8 +24,9 @@ namespace BaseMod
                 var scriptName = ability.scriptName;
                 if (scriptName.Contains("AtValueSpeedChangeSkill_"))
                 {
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     // warning: horrible painful bullshit
-                    // code to take an input of what skill becomes unclashable.
+                    // code to take an input of what skill we change into.
                     // horrible implementation but I need to do it, else the game can't find this specific skill.
                     var newskillID = Convert.ToInt32(scriptName.Replace("AtValueSpeedChangeSkill_", ""));
                     var whae = delegate (SkillModel x) { return x.GetID() == newskillID; };
@@ -38,6 +39,7 @@ namespace BaseMod
 
                     if (originSpeed >= speed_conditional_needed)
                     {
+                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
                         action.ChangeSkill(naenae);
                     }
                 };

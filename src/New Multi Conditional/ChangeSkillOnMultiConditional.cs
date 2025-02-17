@@ -25,6 +25,7 @@ namespace BaseMod
                 var scriptName = ability.scriptName;
                 if (scriptName.Contains("ChangeSkillOnMultiConditional_"))
                 {
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     if (ability.buffData == null) continue;
                     var limit = ability.buffData.Limit;
                     if (limtracker >= limit) continue;
@@ -53,6 +54,7 @@ namespace BaseMod
                     var check_three = __instance.GetActivatedBuffStack(keyword_status3) >= potency_check && __instance.GetActivatedBuffTurn(keyword_status3) >= count_check;
                     if (check_one && check_two && check_three)
                     {
+                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
                         action.ChangeSkill(naenae);
                         limtracker += 1;
                     }

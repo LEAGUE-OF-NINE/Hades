@@ -24,7 +24,8 @@ namespace BaseMod
 				var scriptName = ability.scriptName;
 				if (scriptName.Contains("ChangeSkillOnConditionalTarget_"))
 				{
-					if (ability.buffData == null) continue;
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
+                    if (ability.buffData == null) continue;
 
 					var newskillID = Convert.ToInt32(scriptName.Replace("ChangeSkillOnConditionalTarget_", ""));
 					var whae = delegate (SkillModel x) { return x.GetID() == newskillID; };
@@ -38,7 +39,8 @@ namespace BaseMod
 					BattleUnitModel battleUnitModel = (action != null) ? action.GetMainTarget() : null;
 					if (battleUnitModel != null && battleUnitModel.GetActivatedBuffTurn(keyword_status_one) >= potency_check && battleUnitModel.GetActivatedBuffTurn(keyword_status_one) >= count_check)
                     {
-						action.ChangeSkill(naenae);
+                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
+                        action.ChangeSkill(naenae);
 					}
 				};
 			}

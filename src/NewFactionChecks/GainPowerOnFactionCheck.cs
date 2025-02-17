@@ -7,12 +7,12 @@ using BepInEx;
 
 namespace BaseMod
 {
-    internal class GiveBuffOnUseFactionCheckPerfectReson : MonoBehaviour
+    internal class GainPowerOnFactionCheck : MonoBehaviour
     {
         public static void Setup(Harmony harmony)
         {
-            ClassInjector.RegisterTypeInIl2Cpp<GiveBuffOnUseFactionCheckPerfectReson>();
-            harmony.PatchAll(typeof(GiveBuffOnUseFactionCheckPerfectReson));
+            ClassInjector.RegisterTypeInIl2Cpp<GainPowerOnFactionCheck>();
+            harmony.PatchAll(typeof(GainPowerOnFactionCheck));
         }
 
         [HarmonyPatch(typeof(BattleUnitModel), nameof(BattleActionModel.OnStartTurn_AfterLog))]
@@ -23,7 +23,7 @@ namespace BaseMod
             {
                 var scriptName = ability.scriptName;
                 // checks if our script contains the right Script Name
-                if (scriptName.Contains("GiveBuffOnUseFactionCheckPerfectReson_"))
+                if (scriptName.Contains("GainPowerOnFactionCheck_"))
                 {
                     FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     // if buffdata is empty, skip this.
@@ -31,29 +31,25 @@ namespace BaseMod
 
                     // removes the first part of our script name and only takes the faction name.
                     // then filters through buff data and collects all the data we need
-                    var factionname = scriptName.Substring("GiveBuffOnUseFactionCheckPerfectReson_".Length);
+                    var factionname = scriptName.Substring("GainPowerOnFactionCheck_".Length);
                     var parsed_association = Enum.Parse<UNIT_KEYWORD>(factionname);
 
-                    var keyword = ability.buffData.buffKeyword;
-                    var keyword_status = Enum.Parse<BUFF_UNIQUE_KEYWORD>(keyword);
-
-                    var potency_check = ability.buffData.stack;
-                    var count_check = ability.buffData.turn;
-                    var active_round = ability.buffData.activeRound;
-                    var resonance_check = ability.buffData.value;
+                    var value = ability.buffData.value;
+                    var final_power_added = 0;
 
                     UNIT_FACTION thisFaction = __instance.Faction;
                     foreach (BattleUnitModel model in BattleObjectManager.Instance.GetAliveList(false, thisFaction))
                     {
-                        var current_resonance = action.GetPerfectResonanceStack();
                         // if the alive and player controlled character also belongs to the right association/faction/whatever the fuck, apply a status effect.
-                        if ((model.AssociationList.Contains(parsed_association) || model.UnitKeywordList.Contains(parsed_association)) && current_resonance >= resonance_check)
+                        if (model.AssociationList.Contains(parsed_association) || model.UnitKeywordList.Contains(parsed_association))
                         {
-                            FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
-                            model.AddBuff_Giver(keyword_status, potency_check, model, BATTLE_EVENT_TIMING.ON_START_TURN, count_check, active_round, ABILITY_SOURCE_TYPE.BUFF, null, potency_check, count_check);
-
+                            final_power_added++;
                         }
                     }
+                    int balls = (int)value;
+                    var adder = final_power_added * balls;
+                    action._skill.skillData.defaultSkillPower += adder;
+                    action._skillPowerResultValue += adder;
                 };
             }
         }

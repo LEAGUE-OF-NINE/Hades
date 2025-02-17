@@ -25,6 +25,7 @@ namespace BaseMod
                 // checks if our script contains the right Script Name
                 if (scriptName.Contains("LowerBuffIfGreaterByStack"))
                 {
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     // if buffdata is empty, skip this.
                     if (ability.buffData == null) continue;
 
@@ -43,6 +44,7 @@ namespace BaseMod
                     // if our current potency is higher than our input potency, continue 
                     if (current_potency > potency_check)
                     {
+                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
                         // lowers our status effect. battle_event_timing doesn't really matter
                         __instance.LoseBuffStack(keyword_status, reduction_amount_stack, BATTLE_EVENT_TIMING.ON_START_TURN);
                     }

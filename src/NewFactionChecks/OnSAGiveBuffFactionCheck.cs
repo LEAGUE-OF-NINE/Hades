@@ -23,11 +23,12 @@ namespace BaseMod
             foreach (var abilitydata in coin._classInfo.GetAbilityScript())
             {
                 var scriptName = abilitydata.scriptName;
-                if (scriptName.Contains("CustomReloadScript"))
+                if (scriptName.Contains("OnSAGiveBuffFactionCheck_"))
                 {
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     if (abilitydata.buffData == null) continue;
 
-                    var factionname = scriptName.Replace("OnSAGiveBuffFactionCheck_", "");
+                    var factionname = scriptName.Substring("OnSAGiveBuffFactionCheck_".Length);
                     var parsed_association = Enum.Parse<UNIT_KEYWORD>(factionname);
 
                     var keyword = abilitydata.buffData.buffKeyword;
@@ -41,6 +42,7 @@ namespace BaseMod
                     {
                         if (model.AssociationList.Contains(parsed_association) || model.UnitKeywordList.Contains(parsed_association))
                         {
+                            FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
                             model.AddBuff_Giver(keyword_status, potency_check, model, BATTLE_EVENT_TIMING.BEFORE_GIVE_ATTACK, count_check, active_round, ABILITY_SOURCE_TYPE.UNIT, null, potency_check, count_check);
                         }
                     }

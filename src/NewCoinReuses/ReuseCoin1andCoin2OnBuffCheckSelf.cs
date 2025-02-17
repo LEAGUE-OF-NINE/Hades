@@ -25,6 +25,7 @@ namespace BaseMod
                 // checks if our script contains the right Script Name
                 if (scriptName.Contains("ReuseCoin1andCoin2OnBuffCheckSelf"))
                 {
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     // if buffdata is empty, skip this.
                     if (ability.buffData == null) continue;
 
@@ -43,9 +44,10 @@ namespace BaseMod
                     // if our current potency is lower than our input potency, continue 
                     if (current_potency_amount >= potency_check && current_count_amount >= count_check)
                     {
+                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
                         // copy coin one and two
-                        action._skill.CopyCoin(0);
-                        action._skill.CopyCoin(1);
+                        action._skill.CopyCoin(action, 1, timing);
+                        action._skill.CopyCoin(action, 2, timing);
                     }
                 };
             }

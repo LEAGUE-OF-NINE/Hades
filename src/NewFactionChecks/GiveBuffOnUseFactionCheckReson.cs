@@ -25,12 +25,13 @@ namespace BaseMod
                 // checks if our script contains the right Script Name
                 if (scriptName.Contains("GiveBuffOnUseFactionCheckReson_"))
                 {
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     // if buffdata is empty, skip this.
                     if (ability.buffData == null) continue;
 
                     // removes the first part of our script name and only takes the faction name.
                     // then filters through buff data and collects all the data we need
-                    var factionname = scriptName.Replace("GiveBuffOnUseFactionCheckReson_", "");
+                    var factionname = scriptName.Substring("GiveBuffOnUseFactionCheckReson_".Length);
                     var parsed_association = Enum.Parse<UNIT_KEYWORD>(factionname);
 
                     var keyword = ability.buffData.buffKeyword;
@@ -41,13 +42,14 @@ namespace BaseMod
                     var active_round = ability.buffData.activeRound;
                     var resonance_check = ability.buffData.value;
 
-                    // checks through every living unit onthe battle, and if they're both alive AND player controlled, proceed
-                    foreach (BattleUnitModel model in BattleObjectManager.Instance.GetAliveList(true))
+                    UNIT_FACTION thisFaction = __instance.Faction;
+                    foreach (BattleUnitModel model in BattleObjectManager.Instance.GetAliveList(false, thisFaction))
                     {
                         var current_resonance = action.GetResonanceIndexOrStack();
                         // if the alive and player controlled character also belongs to the right association/faction/whatever the fuck, apply a status effect.
                         if ((model.AssociationList.Contains(parsed_association) || model.UnitKeywordList.Contains(parsed_association)) && current_resonance >= resonance_check)
                         {
+                            FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
                             model.AddBuff_Giver(keyword_status, potency_check, model, BATTLE_EVENT_TIMING.ON_START_TURN, count_check, active_round, ABILITY_SOURCE_TYPE.BUFF, null, potency_check, count_check);
 
                         }

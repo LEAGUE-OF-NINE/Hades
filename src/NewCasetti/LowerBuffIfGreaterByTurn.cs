@@ -25,6 +25,7 @@ namespace BaseMod
                 // checks if our script contains the right Script Name
                 if (scriptName.Contains("LowerBuffIfGreaterByTurn"))
                 {
+                    FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     // if buffdata is empty, skip this.
                     if (ability.buffData == null) continue;
 
@@ -43,6 +44,7 @@ namespace BaseMod
                     // if our current count is higher than our input count, continue 
                     if (current_count > count_check)
                     {
+                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
                         // lowers our status effect. battle_event_timing doesn't really matter
                         __instance.LoseBuffTurn(keyword_status, reduction_amount_count, BATTLE_EVENT_TIMING.ON_START_TURN);
                     }

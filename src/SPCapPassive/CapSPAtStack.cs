@@ -21,15 +21,11 @@ namespace BaseMod
         {
             foreach (var ability in action._skill.GetSkillAbilityScript())
             {
-                var scriptName = ability.scriptName;
                 // checks if our script contains the right Script Name
                 var data = __instance._unitDataModel._classInfo;
                 if (data == null) return;
                 if (data.PassiveSetInfo.PassiveIdList.Contains(18844))
                 {
-                    // if buffdata is empty, skip this.
-                    if (ability.buffData == null) continue;
-
                     // grabs how much potency was input
                     var sp_requirement = 0;
                     var current_sp = __instance.Mp;
@@ -39,7 +35,7 @@ namespace BaseMod
                     // if our current potency is higher than our input potency, continue 
                     if (current_sp < sp_requirement)
                     {
-
+                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + "Passive 18844");
                         // lowers our status effect. battle_event_timing doesn't really matter
                         __instance.RecoverMp(sp_increase, sp_increase);
                     }

@@ -7,12 +7,12 @@ using BepInEx;
 
 namespace BaseMod
 {
-    internal class IfStackAlliesDiedChangeSkill : MonoBehaviour
+    internal class AtLessThanConditionalChangeSkill : MonoBehaviour
     {
         public static void Setup(Harmony harmony)
         {
-            ClassInjector.RegisterTypeInIl2Cpp<IfStackAlliesDiedChangeSkill>();
-            harmony.PatchAll(typeof(IfStackAlliesDiedChangeSkill));
+            ClassInjector.RegisterTypeInIl2Cpp<AtLessThanConditionalChangeSkill>();
+            harmony.PatchAll(typeof(AtLessThanConditionalChangeSkill));
         }
 
         [HarmonyPatch(typeof(BattleUnitModel), nameof(BattleUnitModel.OnStartTurn_BeforeLog))]
@@ -22,26 +22,23 @@ namespace BaseMod
             foreach (var ability in action._skill.GetSkillAbilityScript())
             {
                 var scriptName = ability.scriptName;
-                if (scriptName.Contains("IfStackAlliesDiedChangeSkill_"))
+                if (scriptName.Contains("AtLessThanValueChangeSkill_"))
                 {
                     FrogMainClass.Logg.LogInfo("Successfully Detected: " + scriptName);
                     // warning: horrible painful bullshit
-                    // "regex at home" but dogshit. 
-                    // search through the specific string in Scriptname, get it, cut off the script name, keep the ID number
-                    // then convert it to an actual skillID through fucking magic. fuck.
+                    // code to take an input of what skill we change into.
                     // horrible implementation but I need to do it, else the game can't find this specific skill.
-                    var newskillID = Convert.ToInt32(scriptName.Replace("IfStackAlliesDiedChangeSkill_", ""));
+                    var newskillID = Convert.ToInt32(scriptName.Replace("AtLessThanValueChangeSkill_", ""));
                     var whae = delegate (SkillModel x) { return x.GetID() == newskillID; };
                     var naenae = __instance.GetSkillList().Find(whae);
 
-                    // at the input players need to specify the conditional they wan
-                    var dead_ally_amounts_needed = ability.buffData.stack;
+                    var keyword_one = ability.buffData.buffKeyword;
+                    var keyword_status = Enum.Parse<BUFF_UNIQUE_KEYWORD>(keyword_one);
 
-                    var deadallycount = action.Model.deadAllyCount;
-
-                    if (deadallycount >= dead_ally_amounts_needed)
+                    var potency_check = ability.buffData.stack;
+                    var count_check = ability.buffData.turn;
+                    if (__instance.GetActivatedBuffStack(keyword_status) <= potency_check && __instance.GetActivatedBuffTurn(keyword_status) <= count_check)
                     {
-                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
                         action.ChangeSkill(naenae);
                     }
                 };
