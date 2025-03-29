@@ -31,7 +31,7 @@ namespace BaseMod
 
                     // removes the first part of our script name and only takes the faction name.
                     // then filters through buff data and collects all the data we need
-                    var factionname = scriptName.Substring("GiveBuffOnUseFactionCheckPerfectReson_".Length);
+                    var factionname = scriptName.Substring("GiveBuffOnUseFactionCheck_".Length);
                     var parsed_association = Enum.Parse<UNIT_KEYWORD>(factionname);
 
                     var keyword = ability.buffData.buffKeyword;

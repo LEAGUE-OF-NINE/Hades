@@ -36,8 +36,8 @@ public class FrogMainClass : BasePlugin
         AtLessThanConditionalChangeSkill.Setup(harmony);
 
         // casetti skills
-        LowerBuffIfGreaterByStack.Setup(harmony);
-        LowerBuffIfGreaterByTurn.Setup(harmony);
+        //LowerBuffIfGreaterByStack.Setup(harmony);
+        //LowerBuffIfGreaterByTurn.Setup(harmony);
 
         // factioncheck skills
         OnSAGiveBuffFactionCheck.Setup(harmony);

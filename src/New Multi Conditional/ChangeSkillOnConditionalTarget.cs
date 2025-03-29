@@ -37,11 +37,22 @@ namespace BaseMod
 					var potency_check = ability.buffData.stack;
 					var count_check = ability.buffData.turn;
 					BattleUnitModel battleUnitModel = (action != null) ? action.GetMainTarget() : null;
-					if (battleUnitModel != null && battleUnitModel.GetActivatedBuffTurn(keyword_status_one) >= potency_check && battleUnitModel.GetActivatedBuffTurn(keyword_status_one) >= count_check)
-                    {
-                        FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
-                        action.ChangeSkill(naenae);
-					}
+					var target_potency = battleUnitModel.GetActivatedBuffStack(keyword_status_one);
+					var target_count = 0;
+
+                        if (count_check >= 1) { target_count = battleUnitModel.GetActivatedBuffTurn(keyword_status_one); };
+
+					if (battleUnitModel != null)
+					{
+						if (target_count >= count_check)
+						{
+							if (target_potency >= potency_check)
+							{
+								FrogMainClass.Logg.LogInfo("Successfully Activated: " + scriptName);
+								action.ChangeSkill(naenae);
+							} else { FrogMainClass.Logg.LogInfo("Failed because of potency check"); };
+						} else { FrogMainClass.Logg.LogInfo("Failed because of target_count_check"); };
+					} else { FrogMainClass.Logg.LogInfo("Failed because of null check"); }
 				};
 			}
 		}
